@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omar's Driving School | Premium Instruction in Durban</title>
+    <meta name="description" content="Durban's premier driving academy. Professional, patient instruction in modern vehicles. We build safe drivers for life.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --color-bg: #050505;
+            --color-primary: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-bg);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6, .font-space-grotesk {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        ::selection {
+            background: var(--color-primary);
+            color: black;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050505;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #222;
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #444;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes slow-zoom {
+            0% { transform: scale(1.05); }
+            100% { transform: scale(1.15); }
+        }
+        .animate-slow-zoom {
+            animation: slow-zoom 20s ease-out infinite alternate;
+        }
+
+        @keyframes progress {
+            0% { transform: scaleX(0); }
+            100% { transform: scaleX(1); }
+        }
+        .animate-progress {
+            animation: progress 3s ease-in-out forwards;
+        }
+
+        @keyframes scroll-down {
+            0% { transform: translateY(-100%); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(100%); opacity: 0; }
+        }
+        .animate-scroll-down {
+            animation: scroll-down 1.5s ease-in-out infinite;
+        }
+
+        /* Reveal Animation Classes */
+        .reveal {
+            opacity: 0;
+            filter: blur(10px);
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, filter, transform;
+        }
+        .reveal.visible {
+            opacity: 1;
+            filter: blur(0);
+            transform: translateY(0);
+        }
+
+        /* Magnetic Button Base */
+        .magnetic-btn {
+            will-change: transform;
+        }
+
+        /* Spotlight Card Base */
+        .spotlight-card {
+            position: relative;
+        }
+        .spotlight-card::before {
+            content: "";
+            position: absolute;
+            inset: -1px;
+            opacity: 0;
+            transition: opacity 0.5s ease-out;
+            background: radial-gradient(500px circle at var(--mouse-x, 0) var(--mouse-y, 0), rgba(255, 255, 255, 0.08), transparent 40%);
+            pointer-events: none;
+            border-radius: inherit;
+            z-index: 1;
+        }
+        .spotlight-card:hover::before {
+            opacity: 1;
+        }
+        .spotlight-content {
+            position: relative;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body class="bg-[#050505] min-h-screen text-white selection:bg-white selection:text-black">
+
+    <!-- Loading Screen -->
+    <div id="loader" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#050505] transition-opacity duration-700 ease-in-out">
+        <div id="loader-logo" class="transition-all duration-1000 transform opacity-0 scale-90">
+            <img src="Logo.jpg" alt="Omar's Driving School Logo" class="w-32 h-32 md:w-40 md:h-40 object-contain drop-shadow-2xl rounded-full" />
+        </div>
+        <div class="mt-10 overflow-hidden">
+            <h1 id="loader-text" class="font-space-grotesk text-3xl font-bold tracking-widest text-white transition-transform duration-1000 translate-y-full opacity-0">
+                OMAR'S
+            </h1>
+        </div>
+        <div id="loader-line" class="absolute bottom-12 w-48 h-[1px] bg-white/10 overflow-hidden opacity-0 transition-opacity duration-500">
+            <div class="h-full bg-white w-full animate-progress origin-left"></div>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav id="navbar" class="fixed top-0 inset-x-0 z-40 transition-all duration-500 py-6 bg-transparent">
+        <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-3 group">
+                <img src="Logo.jpg" alt="Omar's Logo" class="w-12 h-12 object-contain transition-transform duration-500 group-hover:scale-105 rounded-full" />
+                <span class="font-space-grotesk text-xl font-bold tracking-widest text-white hidden sm:block">OMAR'S</span>
+            </a>
+
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#about" class="text-sm font-medium text-[#BEBEBE] hover:text-white transition-colors duration-300">About</a>
+                <a href="#lessons" class="text-sm font-medium text-[#BEBEBE] hover:text-white transition-colors duration-300">Lessons</a>
+                <a href="#why-us" class="text-sm font-medium text-[#BEBEBE] hover:text-white transition-colors duration-300">Why Us</a>
+                <a href="#faq" class="text-sm font-medium text-[#BEBEBE] hover:text-white transition-colors duration-300">FAQ</a>
+                <a href="#contact" class="text-sm font-medium text-[#BEBEBE] hover:text-white transition-colors duration-300">Contact</a>
+            </div>
+
+            <div class="hidden md:block">
+                <a href="tel:0840497201" class="magnetic-btn inline-flex items-center gap-2 px-6 py-3 bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition-colors duration-300 transition-transform duration-300 ease-out inline-block">
+                    Book Lesson <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </a>
+            </div>
+
+            <button id="mobile-menu-btn" class="md:hidden text-white">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" class="fixed inset-0 z-50 bg-[#050505] flex flex-col justify-center items-center transition-all duration-500 ease-in-out opacity-0 pointer-events-none">
+        <button id="mobile-menu-close" class="absolute top-6 right-6 text-white">
+            <i data-lucide="x" class="w-8 h-8"></i>
+        </button>
+        <div class="flex flex-col items-center gap-8 text-2xl font-space-grotesk">
+            <img src="Logo.jpg" alt="Omar's Logo" class="w-24 h-24 mb-4 rounded-full" />
+            <a href="#about" class="mobile-link text-white hover:text-gray-300 transition-colors" style="transition-delay: 0ms;">About</a>
+            <a href="#lessons" class="mobile-link text-white hover:text-gray-300 transition-colors" style="transition-delay: 100ms;">Lessons</a>
+            <a href="#why-us" class="mobile-link text-white hover:text-gray-300 transition-colors" style="transition-delay: 200ms;">Why Us</a>
+            <a href="#faq" class="mobile-link text-white hover:text-gray-300 transition-colors" style="transition-delay: 300ms;">FAQ</a>
+            <a href="#contact" class="mobile-link text-white hover:text-gray-300 transition-colors" style="transition-delay: 400ms;">Contact</a>
+            <a href="tel:0840497201" class="mt-8 px-8 py-4 bg-white text-black font-bold rounded-full text-lg hover:bg-gray-200 transition-colors">
+                Call 084 049 7201
+            </a>
+        </div>
+    </div>
+
+    <!-- Hero -->
+    <section class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <!-- Background Image & Gradient Overlays -->
+        <div class="absolute inset-0 z-0">
+            <img 
+                src="https://images.unsplash.com/photo-1616422285623-13ff0162193c?q=80&w=2000&auto=format&fit=crop" 
+                alt="Modern car interior" 
+                class="w-full h-full object-cover opacity-30 grayscale scale-105 animate-slow-zoom"
+            />
+            <div class="absolute inset-0 bg-gradient-to-b from-[#050505]/60 via-[#050505]/80 to-[#050505]"></div>
+            <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white/5 via-transparent to-transparent opacity-50"></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-6 w-full text-center flex flex-col items-center mt-12">
+            <div class="reveal inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-8" style="transition-delay: 100ms;">
+                <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+                <span class="text-xs font-medium text-[#BEBEBE] uppercase tracking-widest">Durban's Premier Academy</span>
+            </div>
+            
+            <div class="reveal" style="transition-delay: 200ms;">
+                <h1 class="font-space-grotesk text-5xl sm:text-7xl md:text-[100px] leading-[1.05] font-bold text-white mb-6 tracking-tighter">
+                    Learn to drive <br class="hidden md:block" />
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-[#BEBEBE] to-[#666666]">with confidence.</span>
+                </h1>
+            </div>
+
+            <div class="reveal" style="transition-delay: 300ms;">
+                <p class="text-lg md:text-xl text-[#BEBEBE] max-w-2xl mx-auto mb-12 font-light leading-relaxed">
+                    Professional, patient instruction in modern vehicles. We build safe drivers for life, serving Durban North, Umhlanga, and Westville.
+                </p>
+            </div>
+
+            <div class="reveal flex flex-col sm:flex-row items-center gap-6" style="transition-delay: 400ms;">
+                <a href="tel:0840497201" class="magnetic-btn w-full sm:w-auto px-8 py-4 bg-white text-black font-bold text-lg rounded-full hover:bg-gray-200 transition-colors duration-300 flex items-center justify-center gap-2 shadow-[0_0_30px_rgba(255,255,255,0.15)] inline-block transition-transform duration-300 ease-out">
+                    Call Now <i data-lucide="phone" class="w-5 h-5"></i>
+                </a>
+                <a href="#lessons" class="magnetic-btn w-full sm:w-auto px-8 py-4 bg-[#111111]/80 border border-white/20 text-white font-bold text-lg rounded-full hover:bg-white/10 transition-colors duration-300 backdrop-blur-md inline-block transition-transform duration-300 ease-out">
+                    Book Your Lesson
+                </a>
+            </div>
+        </div>
+
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50 z-10">
+            <span class="text-[10px] uppercase tracking-widest text-white">Scroll</span>
+            <div class="w-[1px] h-12 bg-gradient-to-b from-white to-transparent overflow-hidden">
+                <div class="w-full h-1/2 bg-white animate-scroll-down"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Bar -->
+    <section class="border-y border-white/[0.05] bg-[#050505] relative z-20">
+        <div class="max-w-7xl mx-auto px-6 py-12">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-white/[0.05]">
+                <div class="reveal flex flex-col items-center justify-center text-center px-4" style="transition-delay: 0ms;">
+                    <i data-lucide="award" class="w-6 h-6 text-white mb-4 opacity-70"></i>
+                    <div class="text-3xl md:text-4xl font-space-grotesk font-bold text-white mb-1 tracking-tight">11+</div>
+                    <div class="text-sm text-[#BEBEBE] uppercase tracking-wider">Years Experience</div>
+                </div>
+                <div class="reveal flex flex-col items-center justify-center text-center px-4" style="transition-delay: 100ms;">
+                    <i data-lucide="star" class="w-6 h-6 text-white mb-4 opacity-70"></i>
+                    <div class="text-3xl md:text-4xl font-space-grotesk font-bold text-white mb-1 tracking-tight">5.0</div>
+                    <div class="text-sm text-[#BEBEBE] uppercase tracking-wider">Google Rating</div>
+                </div>
+                <div class="reveal flex flex-col items-center justify-center text-center px-4" style="transition-delay: 200ms;">
+                    <i data-lucide="check-circle" class="w-6 h-6 text-white mb-4 opacity-70"></i>
+                    <div class="text-3xl md:text-4xl font-space-grotesk font-bold text-white mb-1 tracking-tight">Highest</div>
+                    <div class="text-sm text-[#BEBEBE] uppercase tracking-wider">1st Time Pass Rate</div>
+                </div>
+                <div class="reveal flex flex-col items-center justify-center text-center px-4" style="transition-delay: 300ms;">
+                    <i data-lucide="map-pin" class="w-6 h-6 text-white mb-4 opacity-70"></i>
+                    <div class="text-3xl md:text-4xl font-space-grotesk font-bold text-white mb-1 tracking-tight">4+</div>
+                    <div class="text-sm text-[#BEBEBE] uppercase tracking-wider">Core Service Areas</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="py-32 bg-[#050505] relative overflow-hidden">
+        <div class="absolute top-1/2 left-0 -translate-y-1/2 w-[800px] h-[800px] bg-white/5 rounded-full blur-[120px] pointer-events-none"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="grid md:grid-cols-2 gap-20 items-center">
+                <div class="relative">
+                    <div class="reveal" style="transition-delay: 0ms;">
+                        <div class="aspect-[4/5] rounded-[24px] overflow-hidden border border-white/10 relative">
+                            <div class="absolute inset-0 bg-black/40 z-10"></div>
+                            <img 
+                                src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?q=80&w=1000&auto=format&fit=crop" 
+                                alt="Professional Driving Instructor" 
+                                class="w-full h-full object-cover grayscale opacity-80"
+                            />
+                        </div>
+                        
+                        <!-- Floating Badge -->
+                        <div class="absolute -bottom-8 -right-8 bg-[#111111] p-6 rounded-2xl border border-white/20 backdrop-blur-xl shadow-[0_20px_40px_rgba(0,0,0,0.5)] z-20 animate-float">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center">
+                                    <i data-lucide="shield" class="w-6 h-6 text-white"></i>
+                                </div>
+                                <div>
+                                    <div class="text-white font-bold font-space-grotesk">K53 Certified</div>
+                                    <div class="text-[#BEBEBE] text-sm">Professional Instructor</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="reveal" style="transition-delay: 100ms;">
+                        <h2 class="text-white/60 text-sm font-bold uppercase tracking-widest mb-4">About Us</h2>
+                        <h3 class="font-space-grotesk text-4xl md:text-6xl font-bold text-white mb-8 tracking-tighter">
+                            Mastering the art of safe driving.
+                        </h3>
+                    </div>
+                    
+                    <div class="reveal" style="transition-delay: 200ms;">
+                        <div class="space-y-6 text-[#BEBEBE] text-lg font-light leading-relaxed">
+                            <p>
+                                For over a decade, Omar's Driving School has set the standard for driver education in Durban. We believe that learning to drive shouldn't be stressful—it should be an empowering journey.
+                            </p>
+                            <p>
+                                As an owner-operated academy, Omar brings unparalleled patience, expertise, and a genuine passion for teaching. Whether you have zero experience or need to polish your skills for the final test, our personalized approach guarantees readiness.
+                            </p>
+                            <p>
+                                We don't just prepare you to pass your K53 test; we equip you with the defensive driving skills needed for a lifetime of safe motoring on South African roads.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="reveal mt-12" style="transition-delay: 300ms;">
+                        <div class="flex items-center gap-6">
+                            <div class="flex -space-x-4">
+                                <div class="w-12 h-12 rounded-full border-2 border-[#050505] bg-[#111111] flex items-center justify-center z-[30]"><i data-lucide="star" class="w-4 h-4 text-white"></i></div>
+                                <div class="w-12 h-12 rounded-full border-2 border-[#050505] bg-[#111111] flex items-center justify-center z-[20]"><i data-lucide="star" class="w-4 h-4 text-white"></i></div>
+                                <div class="w-12 h-12 rounded-full border-2 border-[#050505] bg-[#111111] flex items-center justify-center z-[10]"><i data-lucide="star" class="w-4 h-4 text-white"></i></div>
+                            </div>
+                            <div>
+                                <div class="text-white font-bold">Trusted by hundreds</div>
+                                <div class="text-[#BEBEBE] text-sm">of successful students</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Us -->
+    <section id="why-us" class="py-32 bg-[#050505]">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-20">
+                <div class="reveal">
+                    <h2 class="text-white/60 text-sm font-bold uppercase tracking-widest mb-4">The Omar Difference</h2>
+                    <h3 class="font-space-grotesk text-4xl md:text-6xl font-bold text-white tracking-tighter">
+                        Why choose us.
+                    </h3>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Card 1 -->
+                <div class="spotlight-card reveal overflow-hidden rounded-[24px] border border-white/[0.08] bg-[#111111]/80 backdrop-blur-[15px] p-10 transition-transform duration-500 hover:-translate-y-1 hover:border-white/[0.15]" style="transition-delay: 0ms;">
+                    <div class="spotlight-content">
+                        <div class="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center mb-6 border border-white/10">
+                            <i data-lucide="check-circle" class="w-7 h-7 text-white"></i>
+                        </div>
+                        <h4 class="font-space-grotesk text-2xl font-bold text-white mb-4">Highest 1st Time Pass Rate</h4>
+                        <p class="text-[#BEBEBE] leading-relaxed">Our proven methodology ensures you are fully prepared for the testing grounds.</p>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="spotlight-card reveal overflow-hidden rounded-[24px] border border-white/[0.08] bg-[#111111]/80 backdrop-blur-[15px] p-10 transition-transform duration-500 hover:-translate-y-1 hover:border-white/[0.15]" style="transition-delay: 100ms;">
+                    <div class="spotlight-content">
+                        <div class="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center mb-6 border border-white/10">
+                            <i data-lucide="users" class="w-7 h-7 text-white"></i>
+                        </div>
+                        <h4 class="font-space-grotesk text-2xl font-bold text-white mb-4">Patient Instruction</h4>
+                        <p class="text-[#BEBEBE] leading-relaxed">Nervous driver? No problem. Omar is renowned for his calm, encouraging teaching style.</p>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="spotlight-card reveal overflow-hidden rounded-[24px] border border-white/[0.08] bg-[#111111]/80 backdrop-blur-[15px] p-10 transition-transform duration-500 hover:-translate-y-1 hover:border-white/[0.15]" style="transition-delay: 200ms;">
+                    <div class="spotlight-content">
+                        <div class="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center mb-6 border border-white/10">
+                            <i data-lucide="car" class="w-7 h-7 text-white"></i>
+                        </div>
+                        <h4 class="font-space-grotesk text-2xl font-bold text-white mb-4">Modern Vehicles</h4>
+                        <p class="text-[#BEBEBE] leading-relaxed">Learn in world-class, clean, and safe vehicles equipped with dual controls.</p>
+                    </div>
+                </div>
+                <!-- Card 4 -->
+                <div class="spotlight-card reveal overflow-hidden rounded-[24px] border border-white/[0.08] bg-[#111111]/80 backdrop-blur-[15px] p-10 transition-transform duration-500 hover:-translate-y-1 hover:border-white/[0.15]" style="transition-delay: 300ms;">
+                    <div class="spotlight-content">
+                        <div class="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center mb-6 border border-white/10">
+                            <i data-lucide="map-pin" class="w-7 h-7 text-white"></i>
+                        </div>
+                        <h4 class="font-space-grotesk text-2xl font-bold text-white mb-4">Door-to-Door Service</h4>
+                        <p class="text-[#BEBEBE] leading-relaxed">We pick you up and drop you off at home, work, or school within our service areas.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lessons -->
+    <section id="lessons" class="py-32 bg-[#0a0a0a] relative border-y border-white/[0.05]">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
+                <div class="reveal">
+                    <h2 class="text-white/60 text-sm font-bold uppercase tracking-widest mb-4">Our Services</h2>
+                    <h3 class="font-space-grotesk text-4xl md:text-6xl font-bold text-white tracking-tighter">
+                        Premium instruction.
+                    </h3>
+                </div>
+                <div class="reveal" style="transition-delay: 100ms;">
+                    <p class="text-[#BEBEBE] max-w-md">
+                        Whether you prefer manual or automatic, we provide comprehensive K53 training tailored to your learning pace.
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Lesson 1 -->
+                <div class="spotlight-card reveal flex flex-col h-full overflow-hidden rounded-[24px] border border-white/[0.08] bg-[#111111]/80 backdrop-blur-[15px] p-8 transition-transform duration-500 hover:-translate-y-1 hover:border-white/[0.15]" style="transition-delay: 0ms;">
+                    <div class="spotlight-content flex flex-col h-full">
+                        <h4 class="font-space-grotesk text-3xl font-bold text-white mb-4 mt-4">Automatic Lessons</h4>
+                        <p class="text-[#BEBEBE] mb-8 min-h-[48px]">Perfect for city driving. Focus on the road, not the gears.</p>
+                        <ul class="space-y-4 mb-12 flex-grow">
+                            <li class="flex items-start gap-3"><i data-lucide="check" class="w-5 h-5 text-white shrink-0"></i><span class="text-[#BEBEBE]">Modern Automatic Vehicle</span></li>
+                            <li class="flex items-start gap-3"><i data-lucide="check" class="w-5 h-5 text-white shrink-0"></i><span class="text-[#BEBEBE]">K53 Standard</span></li>
+                            <li class="flex items-start gap-3"><i data-lucide="check" class="w-5 h-5 text-white shrink-0"></i><span class="text-[#BEBEBE]">Route Familiarization</span></li>
+                        </ul>
+                        <a href="tel:0840497201" class="magnetic-btn w-full py-4 text-center rounded-full font-bold transition-all duration-300 bg-[#111111] border border-white/20 text-white hover:bg-white/10 inline-block">
+                            Inquire Now
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Lesson 2 Highlighted -->
+                <div class="spotlight-card reveal flex flex-col h-full overflow-hidden rounded-[24px] border border-white/30 shadow-[0_0_40px_rgba(255,255,255,0.05)] bg-[#111111]/80 backdrop-blur-[15px] p-8 transition-transform duration-500 hover:-translate-y-1" style="transition-delay: 150ms;">
+                    <div class="spotlight-content flex flex-col h-full relative">
+                        <div class="absolute top-0 right-0 transform -translate-y-4">
+                            <span class="bg-white text-black text-xs font-bold uppercase tracking-widest py-1 px-3 rounded-full">Most Popular</span>
+                        </div>
+                        <h4 class="font-space-grotesk text-3xl font-bold text-white mb-4 mt-4">Manual Lessons</h4>
+                        <p class="text-[#BEBEBE] mb-8 min-h-[48px]">The complete driving experience. Get unrestricted licensing.</p>
+                        <ul class="space-y-4 mb-12 flex-grow">
+                            <li class="flex items-start gap-3"><i data-lucide="check" class="w-5 h-5 text-white shrink-0"></i><span class="text-[#BEBEBE]">Clutch Control Mastery</span></li>
+                            <li class="flex items-start gap-3"><i data-lucide="check" class="w-5 h-5 text-white shrink-0"></i><span class="text-[#BEBEBE]">Hill Starts & Alley Docking</span></li>
+                            <li class="flex items-start gap-3"><i data-lucide="check" class="w-5 h-5 text-white shrink-0"></i><span class="text-[#BEBEBE]">Full K53 Preparation</span></li>
+                        </ul>
+                        <a href="tel:0840497201" class="magnetic-btn w-full py-4 text-center rounded-full font-bold transition-all duration-300 bg-white text-black hover:bg-gray-200 inline-block">
+                            Inquire Now
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Lesson 3 -->
+                <div class="spotlight-card reveal flex flex-col h-full overflow-hidden rounded-[24px] border border-white/[0.08] bg-[#111111]/80 backdrop-blur-[15px] p-8 transition-transform duration-500 hover:-translate-y-1 hover:border-white/[0.15]" style="transition-delay: 300ms;">
+                    <div class="spotlight-content flex flex-col h-full">
+                        <h4 class="font-space-grotesk text-3xl font-bold text-white mb-4 mt-4">Test Day Packages</h4>
+                        <p class="text-[#BEBEBE] mb-8 min-h-[48px]">Everything you need for the big day, handled professionally.</p>
+                        <ul class="space-y-4 mb-12 flex-grow">
+                            <li class="flex items-start gap-3"><i data-lucide="check" class="w-5 h-5 text-white shrink-0"></i><span class="text-[#BEBEBE]">Vehicle Hire for Test</span></li>
+                            <li class="flex items-start gap-3"><i data-lucide="check" class="w-5 h-5 text-white shrink-0"></i><span class="text-[#BEBEBE]">Pre-test Brush-up Lesson</span></li>
+                            <li class="flex items-start gap-3"><i data-lucide="check" class="w-5 h-5 text-white shrink-0"></i><span class="text-[#BEBEBE]">Testing Centre Assistance</span></li>
+                        </ul>
+                        <a href="tel:0840497201" class="magnetic-btn w-full py-4 text-center rounded-full font-bold transition-all duration-300 bg-[#111111] border border-white/20 text-white hover:bg-white/10 inline-block">
+                            Inquire Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process -->
+    <section class="py-32 bg-[#050505]">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="reveal text-center mb-24">
+                <h3 class="font-space-grotesk text-4xl md:text-5xl font-bold text-white tracking-tighter">
+                    The road to independence.
+                </h3>
+            </div>
+
+            <div class="relative">
+                <div class="hidden md:block absolute top-1/2 left-0 w-full h-[1px] bg-white/10 -translate-y-1/2 z-0"></div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-4 relative z-10">
+                    <div class="reveal flex flex-col items-center text-center group" style="transition-delay: 0ms;">
+                        <div class="w-16 h-16 rounded-full bg-[#111111] border border-white/20 flex items-center justify-center text-white font-space-grotesk font-bold text-xl mb-6 relative group-hover:bg-white group-hover:text-black transition-colors duration-500 shadow-[0_0_0_8px_#050505]">1</div>
+                        <h4 class="text-white font-bold mb-2">Contact Us</h4>
+                        <p class="text-sm text-[#BEBEBE]">Reach out via call or WhatsApp.</p>
+                    </div>
+                    <div class="reveal flex flex-col items-center text-center group" style="transition-delay: 150ms;">
+                        <div class="w-16 h-16 rounded-full bg-[#111111] border border-white/20 flex items-center justify-center text-white font-space-grotesk font-bold text-xl mb-6 relative group-hover:bg-white group-hover:text-black transition-colors duration-500 shadow-[0_0_0_8px_#050505]">2</div>
+                        <h4 class="text-white font-bold mb-2">Book Lesson</h4>
+                        <p class="text-sm text-[#BEBEBE]">Schedule a time that suits you.</p>
+                    </div>
+                    <div class="reveal flex flex-col items-center text-center group" style="transition-delay: 300ms;">
+                        <div class="w-16 h-16 rounded-full bg-[#111111] border border-white/20 flex items-center justify-center text-white font-space-grotesk font-bold text-xl mb-6 relative group-hover:bg-white group-hover:text-black transition-colors duration-500 shadow-[0_0_0_8px_#050505]">3</div>
+                        <h4 class="text-white font-bold mb-2">Learn Fundamentals</h4>
+                        <p class="text-sm text-[#BEBEBE]">Master vehicle control.</p>
+                    </div>
+                    <div class="reveal flex flex-col items-center text-center group" style="transition-delay: 450ms;">
+                        <div class="w-16 h-16 rounded-full bg-[#111111] border border-white/20 flex items-center justify-center text-white font-space-grotesk font-bold text-xl mb-6 relative group-hover:bg-white group-hover:text-black transition-colors duration-500 shadow-[0_0_0_8px_#050505]">4</div>
+                        <h4 class="text-white font-bold mb-2">Road Test Prep</h4>
+                        <p class="text-sm text-[#BEBEBE]">K53 yard and road practice.</p>
+                    </div>
+                    <div class="reveal flex flex-col items-center text-center group" style="transition-delay: 600ms;">
+                        <div class="w-16 h-16 rounded-full bg-[#111111] border border-white/20 flex items-center justify-center text-white font-space-grotesk font-bold text-xl mb-6 relative group-hover:bg-white group-hover:text-black transition-colors duration-500 shadow-[0_0_0_8px_#050505]">5</div>
+                        <h4 class="text-white font-bold mb-2">Pass & Drive</h4>
+                        <p class="text-sm text-[#BEBEBE]">Earn your license confidently.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-32 bg-[#0a0a0a] overflow-hidden border-t border-white/[0.05]">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="reveal text-center mb-20">
+                <h2 class="text-white/60 text-sm font-bold uppercase tracking-widest mb-4">Student Success</h2>
+                <h3 class="font-space-grotesk text-4xl md:text-5xl font-bold text-white tracking-tighter">
+                    Don't just take our word for it.
+                </h3>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="spotlight-card reveal overflow-hidden rounded-[24px] border border-white/[0.08] bg-[#111111]/80 backdrop-blur-[15px] p-8" style="transition-delay: 0ms;">
+                    <div class="spotlight-content">
+                        <div class="flex gap-1 mb-6 text-white"><i data-lucide="star" class="w-5 h-5 fill-white"></i><i data-lucide="star" class="w-5 h-5 fill-white"></i><i data-lucide="star" class="w-5 h-5 fill-white"></i><i data-lucide="star" class="w-5 h-5 fill-white"></i><i data-lucide="star" class="w-5 h-5 fill-white"></i></div>
+                        <p class="text-[#BEBEBE] text-lg leading-relaxed mb-8 italic">"Omar is the bomb! Our son had absolutely no experience, but Omar was so patient and made sure he was ready and prepared for the big day. Thank you so much!"</p>
+                        <div class="flex items-center gap-4 border-t border-white/10 pt-6">
+                            <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-black font-bold font-space-grotesk">C</div>
+                            <div class="text-white font-medium">Chantell</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="spotlight-card reveal overflow-hidden rounded-[24px] border border-white/[0.08] bg-[#111111]/80 backdrop-blur-[15px] p-8" style="transition-delay: 200ms;">
+                    <div class="spotlight-content">
+                        <div class="flex gap-1 mb-6 text-white"><i data-lucide="star" class="w-5 h-5 fill-white"></i><i data-lucide="star" class="w-5 h-5 fill-white"></i><i data-lucide="star" class="w-5 h-5 fill-white"></i><i data-lucide="star" class="w-5 h-5 fill-white"></i><i data-lucide="star" class="w-5 h-5 fill-white"></i></div>
+                        <p class="text-[#BEBEBE] text-lg leading-relaxed mb-8 italic">"Omar mentored my son into becoming a confident driver. Nothing was too much trouble. He passed first time! Omar is quite simply the best teacher we could have found."</p>
+                        <div class="flex items-center gap-4 border-t border-white/10 pt-6">
+                            <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-black font-bold font-space-grotesk">D</div>
+                            <div class="text-white font-medium">Dr. [Verified Client]</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="spotlight-card reveal overflow-hidden rounded-[24px] border border-white/[0.08] bg-[#111111]/80 backdrop-blur-[15px] p-8" style="transition-delay: 400ms;">
+                    <div class="spotlight-content">
+                        <div class="flex gap-1 mb-6 text-white"><i data-lucide="star" class="w-5 h-5 fill-white"></i><i data-lucide="star" class="w-5 h-5 fill-white"></i><i data-lucide="star" class="w-5 h-5 fill-white"></i><i data-lucide="star" class="w-5 h-5 fill-white"></i><i data-lucide="star" class="w-5 h-5 fill-white"></i></div>
+                        <p class="text-[#BEBEBE] text-lg leading-relaxed mb-8 italic">"Finally got my license thanks to Omars Driving School. Thank you for the perfect services and highly professional approach."</p>
+                        <div class="flex items-center gap-4 border-t border-white/10 pt-6">
+                            <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-black font-bold font-space-grotesk">S</div>
+                            <div class="text-white font-medium">Samantha</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="py-32 bg-[#050505] border-t border-white/[0.05]">
+        <div class="max-w-3xl mx-auto px-6">
+            <div class="reveal text-center mb-16">
+                <h3 class="font-space-grotesk text-4xl md:text-5xl font-bold text-white tracking-tighter mb-6">
+                    Frequently Asked Questions
+                </h3>
+            </div>
+
+            <div class="space-y-4">
+                <div class="reveal" style="transition-delay: 0ms;">
+                    <button class="faq-btn w-full text-left p-6 rounded-[20px] bg-[#111111] border border-white/[0.08] hover:border-white/[0.2] transition-all duration-300 group">
+                        <div class="flex justify-between items-center">
+                            <h4 class="faq-title font-space-grotesk text-lg font-bold transition-colors text-white">Do I need a learner's licence before booking?</h4>
+                            <i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-white transition-transform duration-300 transform rotate-180"></i>
+                        </div>
+                        <div class="faq-content overflow-hidden transition-all duration-500 ease-in-out max-h-40 opacity-100 mt-4">
+                            <p class="text-[#BEBEBE] leading-relaxed">Yes, you must have a valid South African learner's licence to begin practical driving lessons on public roads.</p>
+                        </div>
+                    </button>
+                </div>
+                <div class="reveal" style="transition-delay: 100ms;">
+                    <button class="faq-btn w-full text-left p-6 rounded-[20px] bg-[#111111] border border-white/[0.08] hover:border-white/[0.2] transition-all duration-300 group">
+                        <div class="flex justify-between items-center">
+                            <h4 class="faq-title font-space-grotesk text-lg font-bold transition-colors text-[#BEBEBE] group-hover:text-white">What areas do you service?</h4>
+                            <i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-white transition-transform duration-300"></i>
+                        </div>
+                        <div class="faq-content overflow-hidden transition-all duration-500 ease-in-out max-h-0 opacity-0">
+                            <p class="text-[#BEBEBE] leading-relaxed">We primarily operate in Durban, Durban North, Umhlanga, Westville, and surrounding areas. We offer door-to-door pick up and drop off.</p>
+                        </div>
+                    </button>
+                </div>
+                <div class="reveal" style="transition-delay: 200ms;">
+                    <button class="faq-btn w-full text-left p-6 rounded-[20px] bg-[#111111] border border-white/[0.08] hover:border-white/[0.2] transition-all duration-300 group">
+                        <div class="flex justify-between items-center">
+                            <h4 class="faq-title font-space-grotesk text-lg font-bold transition-colors text-[#BEBEBE] group-hover:text-white">How many lessons will I need?</h4>
+                            <i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-white transition-transform duration-300"></i>
+                        </div>
+                        <div class="faq-content overflow-hidden transition-all duration-500 ease-in-out max-h-0 opacity-0">
+                            <p class="text-[#BEBEBE] leading-relaxed">The number of lessons varies per individual depending on prior experience and learning pace. After an initial assessment, Omar will recommend a personalized package.</p>
+                        </div>
+                    </button>
+                </div>
+                <div class="reveal" style="transition-delay: 300ms;">
+                    <button class="faq-btn w-full text-left p-6 rounded-[20px] bg-[#111111] border border-white/[0.08] hover:border-white/[0.2] transition-all duration-300 group">
+                        <div class="flex justify-between items-center">
+                            <h4 class="faq-title font-space-grotesk text-lg font-bold transition-colors text-[#BEBEBE] group-hover:text-white">Do you offer automatic or manual lessons?</h4>
+                            <i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-white transition-transform duration-300"></i>
+                        </div>
+                        <div class="faq-content overflow-hidden transition-all duration-500 ease-in-out max-h-0 opacity-0">
+                            <p class="text-[#BEBEBE] leading-relaxed">We offer both! You can choose to learn in either an automatic or a manual vehicle based on your preference and licensing needs.</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="py-32 bg-[#0a0a0a] relative overflow-hidden border-t border-white/[0.05]">
+        <div class="absolute bottom-0 right-0 w-[600px] h-[600px] bg-white/5 rounded-full blur-[100px] pointer-events-none"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="grid md:grid-cols-2 gap-20">
+                <div>
+                    <div class="reveal">
+                        <h2 class="font-space-grotesk text-5xl md:text-7xl font-bold text-white mb-8 tracking-tighter">
+                            Let's get you <br />on the road.
+                        </h2>
+                        <p class="text-[#BEBEBE] text-lg mb-12 max-w-md">
+                            Ready to experience the best driving instruction in Durban? Call us today to secure your spot.
+                        </p>
+
+                        <div class="space-y-8">
+                            <a href="tel:0840497201" class="flex items-center gap-6 group cursor-pointer inline-flex">
+                                <div class="w-16 h-16 rounded-full bg-[#111111] border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-colors">
+                                    <i data-lucide="phone" class="w-6 h-6 text-current"></i>
+                                </div>
+                                <div>
+                                    <div class="text-sm text-[#BEBEBE] mb-1">Call Omar Directly</div>
+                                    <div class="text-3xl font-space-grotesk font-bold text-white tracking-tight">084 049 7201</div>
+                                </div>
+                            </a>
+                            
+                            <div class="flex items-center gap-6">
+                                <div class="w-16 h-16 rounded-full bg-[#111111] border border-white/20 flex items-center justify-center">
+                                    <i data-lucide="map-pin" class="w-6 h-6 text-white"></i>
+                                </div>
+                                <div>
+                                    <div class="text-sm text-[#BEBEBE] mb-1">Primary Service Areas</div>
+                                    <div class="text-xl font-space-grotesk font-bold text-white">Durban, Umhlanga, Westville</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal" style="transition-delay: 200ms;">
+                    <div class="bg-[#111111]/80 backdrop-blur-xl rounded-[32px] p-8 md:p-12 border border-white/10 shadow-2xl">
+                        <h3 class="font-space-grotesk text-2xl font-bold text-white mb-8">Send a request</h3>
+                        <form class="space-y-6" onsubmit="event.preventDefault()">
+                            <div>
+                                <input type="text" placeholder="Your Name" class="w-full bg-[#050505] border border-white/10 rounded-xl px-6 py-4 text-white placeholder:text-[#BEBEBE]/50 focus:outline-none focus:border-white transition-colors" />
+                            </div>
+                            <div>
+                                <input type="tel" placeholder="Phone Number" class="w-full bg-[#050505] border border-white/10 rounded-xl px-6 py-4 text-white placeholder:text-[#BEBEBE]/50 focus:outline-none focus:border-white transition-colors" />
+                            </div>
+                            <div>
+                                <select class="w-full bg-[#050505] border border-white/10 rounded-xl px-6 py-4 text-white appearance-none focus:outline-none focus:border-white transition-colors">
+                                    <option value="" disabled selected class="text-[#BEBEBE]/50">Select Service</option>
+                                    <option value="auto">Automatic Lessons</option>
+                                    <option value="manual">Manual Lessons</option>
+                                    <option value="test">Test Day Package</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="magnetic-btn w-full py-4 bg-white text-black font-bold text-lg rounded-xl hover:bg-gray-200 transition-colors duration-300">
+                                Request Callback
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#050505] pt-20 pb-10 border-t border-white/[0.05]">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-8 mb-16">
+                <div class="flex items-center gap-3">
+                    <img src="Logo.jpg" alt="Omar's Logo" class="w-12 h-12 object-contain rounded-full" />
+                    <span class="font-space-grotesk text-2xl font-bold tracking-widest text-white">OMAR'S</span>
+                </div>
+                
+                <div class="flex gap-8 text-sm font-medium text-[#BEBEBE]">
+                    <a href="#about" class="hover:text-white transition-colors">About</a>
+                    <a href="#lessons" class="hover:text-white transition-colors">Lessons</a>
+                    <a href="#faq" class="hover:text-white transition-colors">FAQ</a>
+                    <a href="#contact" class="hover:text-white transition-colors">Contact</a>
+                </div>
+            </div>
+            
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-[#BEBEBE]/50 border-t border-white/[0.05] pt-8">
+                <p>© <span id="year"></span> Omar's Driving School. All rights reserved.</p>
+                <p>Durban, KwaZulu-Natal, South Africa</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Set dynamic year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Loading Screen Logic
+        document.addEventListener("DOMContentLoaded", () => {
+            const loaderLogo = document.getElementById('loader-logo');
+            const loaderText = document.getElementById('loader-text');
+            const loaderLine = document.getElementById('loader-line');
+            const loader = document.getElementById('loader');
+
+            setTimeout(() => loaderLogo.classList.remove('opacity-0', 'scale-90'), 500);
+            setTimeout(() => {
+                loaderText.classList.remove('translate-y-full', 'opacity-0');
+                loaderLine.classList.remove('opacity-0');
+            }, 2000);
+            setTimeout(() => loader.classList.add('opacity-0', 'pointer-events-none'), 3500);
+            setTimeout(() => loader.remove(), 4200);
+        });
+
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-[#050505]/90', 'backdrop-blur-xl', 'border-b', 'border-white/[0.08]');
+                navbar.classList.remove('py-6', 'bg-transparent');
+                navbar.classList.add('py-4');
+            } else {
+                navbar.classList.remove('bg-[#050505]/90', 'backdrop-blur-xl', 'border-b', 'border-white/[0.08]');
+                navbar.classList.add('py-6', 'bg-transparent');
+                navbar.classList.remove('py-4');
+            }
+        });
+
+        // Mobile Menu Logic
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenuClose = document.getElementById('mobile-menu-close');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        const toggleMenu = (isOpen) => {
+            if (isOpen) {
+                mobileMenu.classList.remove('opacity-0', 'pointer-events-none');
+                mobileMenu.classList.add('opacity-100', 'pointer-events-auto');
+            } else {
+                mobileMenu.classList.add('opacity-0', 'pointer-events-none');
+                mobileMenu.classList.remove('opacity-100', 'pointer-events-auto');
+            }
+        };
+
+        mobileMenuBtn.addEventListener('click', () => toggleMenu(true));
+        mobileMenuClose.addEventListener('click', () => toggleMenu(false));
+        mobileLinks.forEach(link => link.addEventListener('click', () => toggleMenu(false)));
+
+        // Scroll Reveal Intersection Observer
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // Magnetic Button Effect
+        const magneticBtns = document.querySelectorAll('.magnetic-btn');
+        magneticBtns.forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = (e.clientX - (rect.left + rect.width / 2)) * 0.15;
+                const y = (e.clientY - (rect.top + rect.height / 2)) * 0.15;
+                btn.style.transform = `translate(${x}px, ${y}px)`;
+            });
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = `translate(0px, 0px)`;
+            });
+        });
+
+        // Spotlight Card Effect
+        const spotlightCards = document.querySelectorAll('.spotlight-card');
+        spotlightCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+
+        // FAQ Accordion Logic
+        const faqBtns = document.querySelectorAll('.faq-btn');
+        faqBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const content = btn.querySelector('.faq-content');
+                const icon = btn.querySelector('.faq-icon');
+                const title = btn.querySelector('.faq-title');
+                const isOpen = content.classList.contains('max-h-40');
+
+                // Close all others first
+                faqBtns.forEach(otherBtn => {
+                    if (otherBtn !== btn) {
+                        const otherContent = otherBtn.querySelector('.faq-content');
+                        const otherIcon = otherBtn.querySelector('.faq-icon');
+                        const otherTitle = otherBtn.querySelector('.faq-title');
+                        
+                        otherContent.classList.remove('max-h-40', 'opacity-100', 'mt-4');
+                        otherContent.classList.add('max-h-0', 'opacity-0');
+                        otherIcon.classList.remove('rotate-180');
+                        otherTitle.classList.remove('text-white');
+                        otherTitle.classList.add('text-[#BEBEBE]');
+                    }
+                });
+
+                // Toggle current
+                if (isOpen) {
+                    content.classList.remove('max-h-40', 'opacity-100', 'mt-4');
+                    content.classList.add('max-h-0', 'opacity-0');
+                    icon.classList.remove('rotate-180');
+                    title.classList.remove('text-white');
+                    title.classList.add('text-[#BEBEBE]');
+                } else {
+                    content.classList.add('max-h-40', 'opacity-100', 'mt-4');
+                    content.classList.remove('max-h-0', 'opacity-0');
+                    icon.classList.add('rotate-180');
+                    title.classList.add('text-white');
+                    title.classList.remove('text-[#BEBEBE]');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
